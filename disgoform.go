@@ -89,15 +89,15 @@ func SyncGlobalApplicationCommands(bot *disgo.Client) error {
 		}
 
 		if currentCommand.DefaultMemberPermissions != nil {
-			copy := currentCommandMap[currentCommand.Name]
-			copy.DefaultMemberPermissions = &currentCommand.DefaultMemberPermissions
-			currentCommandMap[currentCommand.Name] = copy
+			copied := currentCommandMap[currentCommand.Name]
+			copied.DefaultMemberPermissions = &currentCommand.DefaultMemberPermissions
+			currentCommandMap[currentCommand.Name] = copied
 		}
 
 		if currentCommand.Contexts != nil {
-			copy := currentCommandMap[currentCommand.Name]
-			copy.Contexts = *currentCommand.Contexts
-			currentCommandMap[currentCommand.Name] = copy
+			copied := currentCommandMap[currentCommand.Name]
+			copied.Contexts = *currentCommand.Contexts
+			currentCommandMap[currentCommand.Name] = copied
 		}
 	}
 
@@ -105,7 +105,6 @@ func SyncGlobalApplicationCommands(bot *disgo.Client) error {
 	for name, definedCommand := range definedCommandMap {
 		// definedCommand name exists on Discord
 		if currentCommand, ok := currentCommandMap[name]; ok {
-
 			// but is not equal to Discord's version, so update it.
 			if !Equal(definedCommand, currentCommand) {
 				request := &disgo.EditGlobalApplicationCommand{
@@ -260,7 +259,6 @@ func SyncGuildApplicationCommands(bot *disgo.Client) error {
 			for name, definedCommand := range definedCommandGuildIDMap[guild.ID] {
 				// definedCommand name exists on Discord
 				if currentCommand, ok := currentCommandMap[name]; ok {
-
 					// but is not equal to Discord's version, so update it.
 					if !Equal(definedCommand, currentCommand) {
 						request := &disgo.EditGuildApplicationCommand{
@@ -316,7 +314,7 @@ func SyncGuildApplicationCommands(bot *disgo.Client) error {
 			}
 		} // for each guild
 	}); e != nil {
-		return e
+		return fmt.Errorf("SyncGuildApplicationCommands: %w", e)
 	}
 
 	if err := s.Connect(bot); err != nil {
