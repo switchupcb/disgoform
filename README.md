@@ -11,7 +11,7 @@ Disgoform is a tool used to manage the application commands of your Discord Bot.
 You run `disgoform` as a program which imports a Go module to synchronize a Discord Bot's declared application commands with the Discord API.
 
 ```
-go get github.com/switchupcb/disgoform@v1.0.0
+go get github.com/switchupcb/disgoform@v0.10.0
 ```
 
 ## Table of Contents

@@ -1,0 +1,74 @@
+name: "Disgoform"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "disgoform.go"
+      - "go.mod"
+      - "go.sum"
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - v10
+    paths:
+      - "disgoform.go"
+      - "go.mod"
+      - "go.sum"
+    
+jobs:
+  sca-lint:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.64.5
+
+  test-unit:
+    needs: sca-lint
+    name: Unit Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Run Unit Tests
+        run: go test ./tests/unit_test.go
+
+  test-integration:
+    needs: test-unit
+    name: Integration Tests
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+      - name: Run Integration Tests
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          APPID: ${{ secrets.APPID }}
+          GUILDID: ${{ secrets.GUILDID }}
+        run: go test ./tests/integration_test.go
