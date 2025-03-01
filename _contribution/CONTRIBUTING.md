@@ -35,7 +35,7 @@ Integration tests prove functionality between the underlying [API Wrapper (`disg
 
 #### Running Tests
 
-Use `go test ./tests/...` to run the tests from the current directory.
+Use `go test ./tests` to run the tests from the current directory.
 
 Use [Github Action Workflow Files](/.github/workflows/) to find the correct test command and environment variables for a module.
 

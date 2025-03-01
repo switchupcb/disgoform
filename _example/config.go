@@ -2,32 +2,46 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/switchupcb/disgo"
 	"github.com/switchupcb/disgoform"
 )
 
+// Environment Variables.
+var (
+	// token represents the Discord Bot's token.
+	token = os.Getenv("TOKEN")
+
+	// appid represents the Discord Bot's ApplicationID.
+	//
+	// Use Developer Mode to find it OR call GetCurrentUser (request) in your program and set it programmatically.
+	appid = os.Getenv("APPID")
+)
+
 func main() {
 	bot := &disgo.Client{
-		ApplicationID:  "TODO",
-		Authentication: disgo.BotToken("TOKEN"), // or BearerToken("TOKEN")
+		ApplicationID:  appid,
+		Authentication: disgo.BotToken(token),
 		Config:         disgo.DefaultConfig(),
 	}
 
 	disgoform.GlobalApplicationCommands = []disgo.CreateGlobalApplicationCommand{
 		// Command 1
-		disgo.CreateGlobalApplicationCommand{
+		{
 			Name:        "main",
 			Description: disgo.Pointer("A basic command."),
 			Type:        disgo.Pointer(disgo.FlagApplicationCommandTypeCHAT_INPUT),
 		},
+
 		// Command 2
-		disgo.CreateGlobalApplicationCommand{
+		{
 			Name:        "followup",
 			Description: disgo.Pointer("Showcase multiple types of interaction responses."),
 		},
+
 		// Command 3
-		disgo.CreateGlobalApplicationCommand{
+		{
 			Name:        "autocomplete",
 			Description: disgo.Pointer("Learn about autocompletion."),
 			Options: []*disgo.ApplicationCommandOption{

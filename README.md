@@ -33,9 +33,9 @@ Disgoform uses the [Discord HTTP REST API](https://github.com/switchupcb/disgo/b
 
 ```go
 bot := &disgo.Client{
-    ApplicationID: "APPID",
+    ApplicationID:  "APPID",
     Authentication: disgo.BotToken("TOKEN"), // or BearerToken("TOKEN")
-    Config:         disgo.DefaultConfig()
+    Config:         disgo.DefaultConfig(),
 }
 ```
 
@@ -43,23 +43,25 @@ bot := &disgo.Client{
 
 Read the [Discord API Documentation](https://discord.com/developers/docs/interactions/application-commands#application-commands) for more information about Application Commands.
 
-_TIP: Use a `Go: Fill struct` macro (e.g., `Cmd + .` on VSCode) to declare each command faster._
+_TIP: Use a `Go: Fill struct` macro (e.g., `Ctrl .` on VSCode) to declare each command faster._
 
 ```go
 disgoform.GlobalApplicationCommands = []disgo.CreateGlobalApplicationCommand{
     // Command 1
-    disgo.CreateGlobalApplicationCommand{
+    {
         Name:        "main",
         Description: disgo.Pointer("A basic command."),
-        Type: disgo.Pointer(disgo.FlagApplicationCommandTypeCHAT_INPUT),
+        Type:        disgo.Pointer(disgo.FlagApplicationCommandTypeCHAT_INPUT),
     },
+
     // Command 2
-    disgo.CreateGlobalApplicationCommand{
+    {
         Name:        "followup",
         Description: disgo.Pointer("Showcase multiple types of interaction responses."),
     },
+
     // Command 3
-    disgo.CreateGlobalApplicationCommand{
+    {
         Name:        "autocomplete",
         Description: disgo.Pointer("Learn about autocompletion."),
         Options: []*disgo.ApplicationCommandOption{
@@ -88,7 +90,20 @@ disgoform.GlobalApplicationCommands = []disgo.CreateGlobalApplicationCommand{
             },
         },
     },
-    {}, // Command...
+
+    // Command...
+    {
+        NameLocalizations:        &map[string]string{},
+        Description:              nil,
+        DescriptionLocalizations: &map[string]string{},
+        DefaultMemberPermissions: nil,
+        Type:                     nil,
+        NSFW:                     nil,
+        Name:                     "",
+        Options:                  []*disgo.ApplicationCommandOption{},
+        IntegrationTypes:         []disgo.Flag{},
+        Contexts:                 []disgo.Flag{},
+    },
 }
 ```
 
@@ -96,7 +111,18 @@ Define Guild Application Commands using the same format.
 
 ```go
 disgoform.GuildApplicationCommands = []disgo.CreateGuildApplicationCommand{
-    {}, // Command...
+    // Command...
+    {
+        NameLocalizations:        &map[string]string{},
+		Description:              nil,
+		DescriptionLocalizations: &map[string]string{},
+		DefaultMemberPermissions: nil,
+		Type:                     nil,
+		NSFW:                     nil,
+		GuildID:                  "",
+		Name:                     "",
+		Options:                  []*disgo.ApplicationCommandOption{},
+    },
 }
 ```
 
@@ -119,10 +145,10 @@ Use `go build -o disgoform` to build the executable binary, then run `disgoform`
 
 ```
 > disgoform
-Synchronizing {TODO: BOT NAME} Global Application Commands...
-Synchronized {TODO: BOT NAME} Global Application Commands...
-Synchronizing {TODO: BOT NAME} Guild Application Commands...
-Synchronized {TODO: BOT NAME} Guild Application Commands...
+Synchronizing Global Application Commands...
+Synchronized Global Application Commands.
+Synchronizing Guild Application Commands...
+Synchronized Guild Application Commands.
 ```
 
 # What else can Disgoform do?
@@ -132,9 +158,9 @@ You can also generate a `disgoform` `config.go` file using `disgoform.SyncConfig
 
 ```go
 bot := &disgo.Client{
-    ApplicationID: "APPID",
+    ApplicationID:  "APPID",
     Authentication: disgo.BotToken("TOKEN"), // or BearerToken("TOKEN")
-    Config:         disgo.DefaultConfig()
+    Config:         disgo.DefaultConfig(),
 }
 
 guildIDs := []string{"...", "...", "..."}
@@ -143,6 +169,8 @@ guildIDs := []string{"...", "...", "..."}
 output, err := disgoform.SyncConfig(bot, guildIDs)
 if err != nil {
     log.Printf("can't output Discord application command configuration file: %v", err)
+
+    return
 }
 
 fmt.Println(output)
