@@ -14,7 +14,6 @@ linters:
     - gocognit
     - gofumpt
     - lll
-    - wsl
     - varnamelen
 
     - tenv # deprecated

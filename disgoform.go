@@ -30,15 +30,19 @@ var (
 // Sync synchronizes Global and Guild application commands.
 func Sync(bot *disgo.Client) error {
 	log.Println("Synchronizing Global Application Commands...")
+
 	if err := SyncGlobalApplicationCommands(bot); err != nil {
 		return fmt.Errorf("Sync: %w", err)
 	}
+
 	log.Println("Synchronized Global Application Commands.")
 
 	log.Println("Synchronizing Guild Application Commands...")
+
 	if err := SyncGuildApplicationCommands(bot); err != nil {
 		return fmt.Errorf("Sync: %w", err)
 	}
+
 	log.Println("Synchronized Guild Application Commands.")
 
 	return nil
@@ -48,6 +52,7 @@ func Sync(bot *disgo.Client) error {
 func SyncGlobalApplicationCommands(bot *disgo.Client) error {
 	// parse the defined command list into a map of names to application commands.
 	definedCommandMap := make(map[string]disgo.CreateGlobalApplicationCommand, len(GlobalApplicationCommands))
+
 	for _, definedCommand := range GlobalApplicationCommands {
 		if definedCommand.Name == "" {
 			return errors.New("SyncGlobalApplicationCommands: cannot define application command with empty name")
@@ -73,6 +78,7 @@ func SyncGlobalApplicationCommands(bot *disgo.Client) error {
 	// parse the current command list into a map of names to application commands.
 	currentCommandMap := make(map[string]disgo.CreateGlobalApplicationCommand, len(currentCommands))
 	currentCommandIDMap := make(map[string]string, len(currentCommands))
+
 	for _, currentCommand := range currentCommands {
 		currentCommandIDMap[currentCommand.Name] = currentCommand.ID
 		currentCommandMap[currentCommand.Name] = disgo.CreateGlobalApplicationCommand{
@@ -158,12 +164,15 @@ func SyncGlobalApplicationCommands(bot *disgo.Client) error {
 //
 // WARNING: This function connects and disconnects from the Discord Gateway.
 func SyncGuildApplicationCommands(bot *disgo.Client) error {
-	// lock represents a lock used to ensure the synchronization is run once.
+	// lock represents a lock used to confirm the synchronization is run once.
 	var lock sync.Mutex
+
+	// run tracks whether a guild application command synchronization operation is running.
 	run := false
 
 	// parse the defined guild command list into a map of GuildIDs to a map of names to guild application commands.
 	definedCommandGuildIDMap := make(map[string]map[string]disgo.CreateGuildApplicationCommand)
+
 	for _, definedCommand := range GuildApplicationCommands {
 		if definedCommand.GuildID == "" {
 			return fmt.Errorf("SyncGuildApplicationCommands: cannot define guild application command with name %q using empty guild id", definedCommand.Name)
@@ -322,6 +331,7 @@ func SyncGuildApplicationCommands(bot *disgo.Client) error {
 	}
 
 	_, _ = s.Wait()
+
 	if err != nil {
 		return fmt.Errorf("SyncGuildApplicationCommands: %w", err)
 	}
