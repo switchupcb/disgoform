@@ -5,7 +5,7 @@
 
 Use `disgoform` to stop wasting development time sending application command updates to the Discord API.
 
-# What is Disgoform?
+## What is Disgoform?
 Disgoform is a tool used to manage the application commands of your Discord Bot.
 
 You run `disgoform` as a program which imports a Go module to synchronize a Discord Bot's declared application commands with the Discord API.
@@ -21,13 +21,13 @@ go get github.com/switchupcb/disgoform@v0.10.0
 | [How do you use Disgoform?](#how-do-you-use-disgoform)     | [Define Client](#1-define-your-client), [Declare commands](#2-define-your-application-commands), [Sync](#3-synchronize-your-application-commands) |
 | [What else can Disgoform do?](#what-else-can-disgoform-do) | [Reverse Sync](#what-else-can-disgoform-do)                                                                                                       |
 
-# How do you use Disgoform?
+## How do you use Disgoform?
 
 View the [main example](_example\main.go) for the example `.go` file.
 
 _You can download the Go programming language [here](https://go.dev/learn/)._
 
-## 1. Define your client.
+### 1. Define your client.
 
 Disgoform uses the [Discord HTTP REST API](https://github.com/switchupcb/disgo/blob/v10/_contribution/concepts/REQUESTS.md) to update application commands from a Go program.
 
@@ -39,7 +39,7 @@ bot := &disgo.Client{
 }
 ```
 
-## 2. Define your application commands.
+### 2. Define your application commands.
 
 Read the [Discord API Documentation](https://discord.com/developers/docs/interactions/application-commands#application-commands) for more information about Application Commands.
 
@@ -114,21 +114,21 @@ disgoform.GuildApplicationCommands = []disgo.CreateGuildApplicationCommand{
     // Command...
     {
         NameLocalizations:        &map[string]string{},
-		Description:              nil,
-		DescriptionLocalizations: &map[string]string{},
-		DefaultMemberPermissions: nil,
-		Type:                     nil,
-		NSFW:                     nil,
-		GuildID:                  "",
-		Name:                     "",
-		Options:                  []*disgo.ApplicationCommandOption{},
+	Description:              nil,
+	DescriptionLocalizations: &map[string]string{},
+	DefaultMemberPermissions: nil,
+	Type:                     nil,
+	NSFW:                     nil,
+	GuildID:                  "",
+	Name:                     "",
+	Options:                  []*disgo.ApplicationCommandOption{},
     },
 }
 ```
 
 _NOTE: The commands in this example are sourced from [Disgo examples](https://github.com/switchupcb/disgo/tree/v10/_examples/command)._
 
-## 3. Synchronize your application commands.
+### 3. Synchronize your application commands.
 Synchronize the Discord Bot's defined application commands with the Discord API.
 
 ```go
@@ -151,7 +151,7 @@ Synchronizing Guild Application Commands...
 Synchronized Guild Application Commands.
 ```
 
-# What else can Disgoform do?
+## What else can Disgoform do?
 You can also generate a `disgoform` `config.go` file using `disgoform.SyncConfig`.
 
 **Here is an example.**
