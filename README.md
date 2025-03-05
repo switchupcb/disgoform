@@ -182,4 +182,4 @@ Use `go build -o config` to build the executable binary, then run it from the co
 config > config.go
 ```
 
-_You can implement this unimplemented feature by [contributing](/_contribution/CONTRIBUTING.md)._
+_You can implement this unimplemented feature by [contributing](/_contribution/CONTRIBUTING.md) or [sponsoring SwitchUpCB](https://github.com/sponsors/switchupcb?frequency=one-time)._
